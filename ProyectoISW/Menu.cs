@@ -118,13 +118,13 @@ namespace ProyectoISW
 
         private void button8_Click(object sender, EventArgs e)
         {
-            openChildForm(new Registros());
+            openChildForm(new RegistrosDom());
             hideSubMenu();
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            openChildForm(new Registros());
+            openChildForm(new RegistrosFaltas());
             hideSubMenu();
         }
 
@@ -204,6 +204,11 @@ namespace ProyectoISW
         {
             panelAux.Visible = true;
             panelMenuCompleto.Visible = false;
+        }
+
+        private void panel5_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

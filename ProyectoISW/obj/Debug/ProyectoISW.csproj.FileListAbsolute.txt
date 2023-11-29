@@ -104,3 +104,5 @@ C:\Users\marco\Desktop\Nueva carpeta\Soft\ProyectoISW\ProyectoISW\obj\Debug\Proy
 C:\Users\marco\Desktop\Nueva carpeta\Soft\ProyectoISW\ProyectoISW\obj\Debug\ProyectoISW.csproj.CopyComplete
 C:\Users\marco\Desktop\Nueva carpeta\Soft\ProyectoISW\ProyectoISW\obj\Debug\ProyectoISW.exe
 C:\Users\marco\Desktop\Nueva carpeta\Soft\ProyectoISW\ProyectoISW\obj\Debug\ProyectoISW.pdb
+C:\Users\marco\Desktop\Nueva carpeta\Soft\ProyectoISW\ProyectoISW\obj\Debug\ProyectoISW.RegistrosFaltas.resources
+C:\Users\marco\Desktop\Nueva carpeta\Soft\ProyectoISW\ProyectoISW\obj\Debug\ProyectoISW.RegistrosDom.resources

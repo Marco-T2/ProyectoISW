@@ -12,9 +12,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ProyectoISW
 {
-    public partial class Registros : Form
+    public partial class RegistrosDom : Form
     {
-        public Registros()
+        public RegistrosDom()
         {
             InitializeComponent();
             configuracionIniciali();
@@ -36,19 +36,12 @@ namespace ProyectoISW
             dateTimePicker1.Enabled = false;
 
 
-            //Limitar el valor de las horas
-            numericUpDown1.Minimum = 0;
-            numericUpDown1.Maximum = 8;
-            numericUpDown1.Enabled = false;
-
-
             //Incializacion de Label descripcion
             label5.Text = "ULTIMOS REGISTROS AGREGADOS";
-            label8.Text = "Nro";
+            label3.Text = "Nro";
 
             //Inicializar parametros de personas ComboBox Datetime y label horas
             comboBox1.Enabled = true;
-            numericUpDown1.Value = 0;
 
             //Inicializar Parametros de botones
             btnNuevoRegistro.Enabled = false; //Nuevo registro
@@ -72,7 +65,6 @@ namespace ProyectoISW
 
             //Habilita cambpos fecha y hora
             dateTimePicker1.Enabled = true;
-            numericUpDown1.Enabled=true;
         }
         public void clickEditarRegistro()
         {
@@ -86,7 +78,6 @@ namespace ProyectoISW
 
             //Habilita cambpos fecha y hora
             dateTimePicker1.Enabled = true;
-            numericUpDown1.Enabled = true;
 
             //Habilitar la tabla
             dataGridView1.Enabled = true;
@@ -134,7 +125,7 @@ namespace ProyectoISW
         //CUANDO SELECIONA UN CAMPO
         private void campoSelecionado(object sender, EventArgs e)
         {          
-            label5.Text = "DETALLE DE HORAS REGISTRADAS";
+            label5.Text = "DETALLE DE DIAS FALTAS";
             btnNuevoRegistro.Enabled = true; //Nuevo registro
             btnEditarReg.Enabled = true; //Editar registro
             int indiceSeleccionado = comboBox1.SelectedIndex;
@@ -176,7 +167,7 @@ namespace ProyectoISW
         //ACTUALIZA TODOS LOS DATOS
         private void actualizarTabla()
         {
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter("SELECT horasextra.id,personal.nombre,  horasextra.fecha, horasextra.canthoras\r\nFROM horasextra\r\nJOIN personal ON horasextra.idpersona = personal.id;", conexion);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter("SELECT dominicalesextra.id,personal.nombre,dominicalesextra.fecha, dominicalesextra.descripcion FROM dominicalesextra JOIN personal ON dominicalesextra.idpersona = personal.id;", conexion);
             DataTable dt = new DataTable();
             da.Fill(dt);
             this.dataGridView1.DataSource = dt;       
@@ -185,7 +176,7 @@ namespace ProyectoISW
         //ACTUALIZAR SELECCIONADO
         private void actualizaCampoSeleccionado()
         {
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter("SELECT horasextra.id,personal.nombre,  horasextra.fecha, horasextra.canthoras\r\nFROM horasextra\r\nJOIN personal ON horasextra.idpersona = personal.id\r\nWHERE personal.nombre = '" + comboBox1.Text + "';;", conexion);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter("SELECT dominicalesextra.id,personal.nombre,dominicalesextra.fecha, dominicalesextra.descripcion FROM dominicalesextra JOIN personal ON dominicalesextra.idpersona = personal.id WHERE personal.nombre = '" + comboBox1.Text + "';", conexion);
             DataTable dt = new DataTable();
             da.Fill(dt);
             this.dataGridView1.DataSource = dt;
@@ -213,7 +204,7 @@ namespace ProyectoISW
             try
             {
                 conexion.Open();
-                String actualizar = "update horasextra set fecha='" + dateTimePicker1.Text + "',canthoras='" + numericUpDown1.Text + "'where id='" + label8.Text + "'";
+                String actualizar = "update dominicalesextra set fecha='" + dateTimePicker1.Text + "'where id='" + label3.Text + "'";
                 NpgsqlCommand cmd = new NpgsqlCommand(actualizar, conexion);
                 cmd.ExecuteNonQuery();
                 conexion.Close();
@@ -234,7 +225,7 @@ namespace ProyectoISW
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = this.dataGridView1.Rows[e.RowIndex];
-                label8.Text = row.Cells["id"].Value.ToString();
+                label3.Text = row.Cells["id"].Value.ToString();
                 comboBox1.Text = row.Cells["nombre"].Value.ToString();
                 if (DateTime.TryParse(row.Cells["fecha"].Value.ToString(), out DateTime fecha))
                 {
@@ -243,14 +234,6 @@ namespace ProyectoISW
                 else
                 {
                     MessageBox.Show("Error al convertir la fecha");
-                }
-                if (int.TryParse(row.Cells["canthoras"].Value.ToString(), out int cantidadHoras))
-                {
-                    numericUpDown1.Value = cantidadHoras;
-                }
-                else
-                {
-                    MessageBox.Show("Error al convertir la cantidad de horas");
                 }
 
             }
@@ -261,7 +244,7 @@ namespace ProyectoISW
             try
             {
                 conexion.Open();
-                String actualizar = "INSERT INTO horasextra(idpersona, fecha, canthoras) VALUES ('" +label7.Text+"','" + dateTimePicker1.Text + "','" + numericUpDown1.Text + "');";
+                String actualizar = "INSERT INTO dominicalesextra(idpersona, fecha) VALUES ('" + label7.Text+"','" + dateTimePicker1.Text + "');";
                 NpgsqlCommand cmd = new NpgsqlCommand(actualizar, conexion);
                 cmd.ExecuteNonQuery();
                 conexion.Close();
@@ -281,7 +264,7 @@ namespace ProyectoISW
             try
             {
                 conexion.Open();
-                String actualizar = "DELETE FROM horasextra where id='" + label8.Text + "'";
+                String actualizar = "DELETE FROM dominicalesextra where id='" + label3.Text + "'";
                 NpgsqlCommand cmd = new NpgsqlCommand(actualizar, conexion);
                 cmd.ExecuteNonQuery();
                 conexion.Close();
@@ -295,5 +278,6 @@ namespace ProyectoISW
                 throw ex;
             }
         }
+
     }
 }
